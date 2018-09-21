@@ -21,7 +21,7 @@ const PROMISE_CHUNK_SIZE = 2;
 
 // in order to increase the # of stories to load, please change the value
 // of the MAX_STORIES constant.
-const MAX_STORIES = 2; // MIN VALUE is 2 so it matches with PROMISE_CHUNK_SIZE
+const MAX_STORIES = 10; // MIN VALUE is 2 so it matches with PROMISE_CHUNK_SIZE
 
 // this is a way to log messages without polluting the console
 window.DataManagerErrorQueue = [];
@@ -181,9 +181,22 @@ class DataManager extends Object {
             let urls = this.storyIds.map((id) => {
                 return ITEM_URL.replace('{id}', id)
             });
-            let values = await this.batchFetch(urls, this.fetchStoryPromise);
+            let values;
 
-            resolve(values);
+            try {
+                values = await this.batchFetch(urls, this.fetchStoryPromise);
+            }
+            catch(e) {
+                console.error(e);
+            } 
+
+            try {
+                resolve(values);
+            }
+            catch(e) {
+                console.error(e);
+            }
+            
         });
     }
 
@@ -226,7 +239,12 @@ class DataManager extends Object {
                 results.push(...values);
             }
 
-            resolve(results);
+            try{
+                resolve(results);
+            }
+            catch(e) {
+                console.error(e);
+            }
         });
     }
 }

@@ -6,8 +6,7 @@ import './FeedItem.css';
 const FeedItem = ({item}) => (
     <div className='FeedItem'>
         <div className='content'>
-        { console.log(item) }
-            <p className='name'>{ item.by }</p>
+            <p className='name'>posted by { item.by }</p>
             <p><a className='url' href={item.url} target='_blank'>{ item.title }</a></p>
         </div>
         <div className="comments">

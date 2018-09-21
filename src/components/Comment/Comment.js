@@ -3,8 +3,8 @@ import React from 'react';
 import './Comment.css';
 
 const Comment = ({comment}) => (
-    <li class='Comment'>
-        <p className='by'>{ comment.by }</p>
+    <li className='Comment'>
+        <p className='by'>comment by { comment.by }</p>
         {/*
             I really couldn't find a way to unescape the comment.text string
         */}

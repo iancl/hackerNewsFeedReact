@@ -27,6 +27,9 @@ in order to increase the # of stories to load, please go to
 'src/tools/dataManager.js' and change the value of the MAX_STORIES
 constant.
 
+Something else that is interesting is that when it seem to happen in all
+browsers at the same time. Maybe we're violating a transaction limit per minute?
+
 ### Bug #2
 I can't seem to be able to unescape the comments. I already tried what is
 mentioned on this link: https://reactjs.org/docs/dom-elements.html and
