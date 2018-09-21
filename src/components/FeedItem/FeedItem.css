@@ -1,0 +1,47 @@
+.FeedItem {
+    border-bottom: 3px solid #000;
+    width: 100%;
+    line-height: 1em;
+}
+.FeedItem, .FeedItem .content {
+    width: 100%;
+    float: left;
+}
+
+.FeedItem .content {
+    color: #828282;
+}
+
+.FeedItem .name {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.FeedItem .url {
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.FeedItem ul {
+    overflow: hidden;
+    float: left;
+
+}
+
+.FeedItem .title {
+    float: left;
+    display: block;
+    padding: 4px 0 0 9px;
+    font-size: 14px;
+    color: black;
+}
+
+@media only screen and (max-width: 660px) {
+    .FeedItem .url {
+        font-size: 14px;
+    }
+
+    .FeedItem .name {
+        font-size: 12px;
+    }
+}
