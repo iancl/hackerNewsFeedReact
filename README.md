@@ -1,4 +1,14 @@
-# Important Notes:
+# Hacker news feed
+This app loads the latest 10 stories and the latest 20 comments from that
+story.
+
+## what was used?:
+- javascript
+- react
+- webpack
+- grunt
+
+## Important Notes:
 I found that the hackerNews API is not very stable mainly due to the fact that
 they don't seem to support batch requests, I mean, request the data for a
 set of items in one request
