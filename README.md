@@ -1,4 +1,16 @@
-# Important Notes:
+# Hacker news feed
+This app loads the latest 10 stories and the latest 20 comments from that
+story.
+
+## what was used?:
+- javascript
+- react
+- webpack
+- grunt
+
+## Important Notes:
+
+### Bug #1
 I found that the hackerNews API is not very stable mainly due to the fact that
 they don't seem to support batch requests, I mean, request the data for a
 set of items in one request
@@ -14,6 +26,11 @@ I found that this happens even when loading 1 single story.
 in order to increase the # of stories to load, please go to
 'src/tools/dataManager.js' and change the value of the MAX_STORIES
 constant.
+
+### Bug #2
+I can't seem to be able to unescape the comments. I already tried what is
+mentioned on this link: https://reactjs.org/docs/dom-elements.html and
+also tried the unescape(), decodeURI() and decodeURIComponens()
 
 ## How to setup:
 1. 'nvm use'

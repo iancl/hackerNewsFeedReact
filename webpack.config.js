@@ -35,12 +35,7 @@ module.exports = {
       ]
     },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        // new BundleAnalyzerPlugin(),
+        new BundleAnalyzerPlugin(),
         new HtmlWebPackPlugin({
             template: "./public/index.html",
             filename: "./index.html"
