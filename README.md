@@ -2,6 +2,9 @@
 This app loads the latest 10 stories and the latest 20 comments from that
 story.
 
+This project was created to show my react and js skills so I didn't 
+spend too much working in the layout.
+
 ## what was used?:
 - javascript
 - react
