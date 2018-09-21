@@ -4,7 +4,6 @@ const LATEST_STORIES_URL = 'https://hacker-news.firebaseio.com/v0/topstories' +
 const ITEM_URL = 'https://hacker-news.firebaseio.com/v0/item/{id}' +
     '.json?print=pretty';
 const MAX_COMMENTS = 20;
-const PROMISE_CHUNK_SIZE = 2;
 
 // ** IMPORTANT **
 // I found that the hackerNews API is not very stable mainly due to the fact that
@@ -21,7 +20,7 @@ const PROMISE_CHUNK_SIZE = 2;
 
 // in order to increase the # of stories to load, please change the value
 // of the MAX_STORIES constant.
-const MAX_STORIES = 10; // MIN VALUE is 2 so it matches with PROMISE_CHUNK_SIZE
+const MAX_STORIES = 10;
 
 // this is a way to log messages without polluting the console
 window.DataManagerErrorQueue = [];
@@ -33,22 +32,6 @@ window.DataManagerErrorQueue = [];
  */
 function log(arg) {
     window.DataManagerErrorQueue.push(arg);
-}
-
-/**
- * Returns an array with arrays of the given size.
- *
- * @param arr {Array} Array to split
- * @param chunkSize {Int}
- */
-function getArrayChunks(arr, chunkSize) {
-    let results = [];
-    
-    while (arr.length) {
-        results.push(arr.splice(0, chunkSize))
-    }
-
-    return results;
 }
 
 /**
@@ -112,6 +95,7 @@ class DataManager extends Object {
                     // store ids
                     this.storyIds = data.slice(0, MAX_STORIES);
                     resolve();
+
                     log({'Fetched top storiy ids': this.storyIds});
                 })
                 .catch(() => {
@@ -152,13 +136,23 @@ class DataManager extends Object {
                     let urls = commentIds.map((id) => {
                         return ITEM_URL.replace('{id}', id)
                     });
-
-                    let values = await this.batchFetch(
-                        urls,
+                    let promises = this.buildFetchPromiseList(
+                        urls, 
                         this.fetchCommentPromise
                     );
+        
+                    let values;
+                    
+                    try {
+                        values = await Promise.all(promises);
+                    }
+                    catch (err) {
+                        console.error(err);
+                        reject();
+                    }
+                    
                     data.comments = values;
-                    resolve(data)
+                    resolve(data);
                 })
                 .catch(() => {
                     reject();
@@ -181,71 +175,37 @@ class DataManager extends Object {
             let urls = this.storyIds.map((id) => {
                 return ITEM_URL.replace('{id}', id)
             });
+            let promises = this.buildFetchPromiseList(
+                urls, 
+                this.fetchStoryPromise
+            );
             let values;
 
             try {
-                values = await this.batchFetch(urls, this.fetchStoryPromise);
+                values = await Promise.all(promises);
             }
-            catch(e) {
-                console.error(e);
-            } 
+            catch (err) {
+                reject();
+                console.error(err);
+            }
 
-            try {
-                resolve(values);
-            }
-            catch(e) {
-                console.error(e);
-            }
-            
+            resolve(values);           
         });
     }
 
     /**
      * 
-     * @param {Array} args arguments to pass to promiseBuilder method
+     * @param {Array} urls arguments to pass to promiseBuilder method
      * @param {Method} fetchPromiseBuilder Builds a specific fetch promise
      */
-    buildPromiseList(args, fetchPromiseBuilder) {
-        let promises = [];
-
-        for (let arg of args) {
-            promises.push(fetchPromiseBuilder.call(this, arg));
+    buildFetchPromiseList(urls, fetchPromiseBuilder) {
+        let promises = []
+        
+        for (let url of urls) {
+            promises.push(fetchPromiseBuilder.call(this, url));
         }
 
         return promises;
-    }
-
-    /**
-     * Fetches a list of urls.
-     * It separates the url array into n number of chunks in order to send
-     * less requests in a short period of time.
-     * See PROMISE_CHUNK_SIZE
-     * @param {Array} urls 
-     * @param {Method} fetchPromiseBuilder Builds a specific fetch promise
-     */
-    async batchFetch(urls, fetchPromiseBuilder) {
-        return new Promise(async (resolve, reject) => {
-            let urlChunks = getArrayChunks(urls, PROMISE_CHUNK_SIZE);
-            let results = [];
-
-            // for of seems to be more stable than map and foreach
-            for (let urlChunk of urlChunks) {
-                let promises = this.buildPromiseList(
-                    urlChunk,
-                    fetchPromiseBuilder
-                );
-                let values = await Promise.all(promises);
-
-                results.push(...values);
-            }
-
-            try{
-                resolve(results);
-            }
-            catch(e) {
-                console.error(e);
-            }
-        });
     }
 }
 

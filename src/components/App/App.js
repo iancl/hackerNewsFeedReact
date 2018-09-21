@@ -40,7 +40,7 @@ class App extends Component {
             this.setState({ model : this.state.model });
         })
         .catch(() => {
-            // nothing to do here
+            console.error('problem getting data from API');
         });
     }
 
