@@ -31,11 +31,21 @@ module.exports = {
             test: /\.css$/,
             exclude: /node_modules/,
             use: [ 'style-loader', 'css-loader' ]
+        },
+        {
+            test: /\.json$/,
+            type: 'javascript/auto',
+            exclude: /node_modules/,
+            use: [{
+                loader: 'file-loader',
+                options: {},
+            }],
+            include: /\.\/config/
         }
       ]
     },
     plugins: [
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new HtmlWebPackPlugin({
             template: "./public/index.html",
             filename: "./index.html"

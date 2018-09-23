@@ -1,0 +1,13 @@
+{
+    "maxStories": 10,
+    "maxComments": 20,
+    "storiesPerPage": 3,
+    "requests": {
+        "delay": 0.01,
+        "parallelRequestCount": 2
+    },
+    "urls": {
+        "topStories": "https://hacker-news.firebaseio.com/v0/topstories.json",
+        "item": "https://hacker-news.firebaseio.com/v0/item/{id}.json"
+    }
+}
