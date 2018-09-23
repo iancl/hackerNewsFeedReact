@@ -10,6 +10,11 @@ import './App.css';
 const year = (new Date()).getFullYear();
 const config = require('../../../config.json');
 
+/**
+ * Utility function that sets text to a node
+ * @param {HTMLElement} el 
+ * @param {String} txt 
+ */
 function setText(el, txt) {
     if (el.textContent) {
         el.textContent = txt;
@@ -19,6 +24,10 @@ function setText(el, txt) {
     }
 }
 
+/**
+ * App Class
+ * Main class of the react app
+ */
 class App extends Component {
     constructor () {
         super();
@@ -29,18 +38,23 @@ class App extends Component {
         };
         this.inProgress = false;
         this.complete = false;
-
         this.loadMoreItems = this.loadMoreItems.bind(this);
     }
 
     /**
-     * Ask the feedController to start loading the stories here
+     * Tells the feedController to start loading the stories here
      */
     componentDidMount() {
+        // disable this now becuase if I disable at in the template then
+        // the button will stop catching events for some reason.
         this.refs.loadMoreButton.setAttribute('disabled', true);
         this.getNextStories();
     }
 
+    /**
+     * Invokes the feedController.getStories method that will return the next
+     * set of stories on the list.
+     */
     getNextStories() {
         this.feedController.getStories()
         .then((model) => {
@@ -60,6 +74,10 @@ class App extends Component {
         });
     }
 
+    /**
+     * Begins the process of loading more stories and changes the state
+     * of the button to locked.
+     */
     loadMoreItems() {
         if (this.inProgress) {
             return;
@@ -75,6 +93,9 @@ class App extends Component {
         this.getNextStories();
     }
 
+    /**
+     * Invoked when there are no more stories to load.
+     */
     disableFeed() {
         let el = this.refs.loadMoreButton;
         el.setAttribute('disabled', true);

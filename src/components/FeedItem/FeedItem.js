@@ -11,7 +11,6 @@ const FeedItem = ({item}) => (
         </div>
         <div className="comments">
             {(item.kids && item.kids.length) ? (<span className='title'>comments:</span>) : null}
-            
             <ul>
                 {item.comments.map((comment, i) => {
                     if (!comment.dead) {
