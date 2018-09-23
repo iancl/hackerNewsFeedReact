@@ -2,13 +2,18 @@ import React from 'react';
 
 import './Comment.css';
 
+function createMarkup(strHtml) {
+
+    return {__html: strHtml};
+}
+
 const Comment = ({comment}) => (
     <li className='Comment'>
         <p className='by'>comment by { comment.by }</p>
         {/*
             I really couldn't find a way to unescape the comment.text string
         */}
-        <p className="text">{ comment.text }</p>
+        <p className="text" dangerouslySetInnerHTML={createMarkup(comment.text)}></p>
     </li>
 );
 
